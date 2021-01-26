@@ -85,12 +85,11 @@ class MyCamera():
 		rows, cols, _ = frame.shape
 		x_medium = int(cols / 2)
 		center = int(cols / 2)
-		faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+		faceCascade = cv2.CascadeClassifier(url + "/" + "haarcascade_frontalface_default.xml")
 
 		while True:
 			frame = self.cap_read_status()[1]
-			faces = faceCascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30),
-												 flags=cv2.CASCADE_SCALE_IMAGE)
+			faces = faceCascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
 			cv2.rectangle(frame, (10, frame.shape[0] - 20), (110, frame.shape[0]), (0, 0, 0), -1)
 			cv2.putText(frame, "Find " + str(len(faces)) + " face!", (10, frame.shape[0] - 5),
 						cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
