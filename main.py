@@ -1,7 +1,5 @@
 from cam_files.cam_class import MyCamera
-
-print('OK')
-
+from servo_files.servo_class import MyServo
 
 # MyCamera().basic_test()
 # MyCamera().color_test()
