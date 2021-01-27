@@ -1,5 +1,6 @@
 import cv2  
 import os
+import platform
 url = os.path.dirname(os.path.abspath(__file__))
 os.chdir(url) 
 
@@ -55,7 +56,10 @@ class MyCamera():
 			high_yellow = np.array([34, 255, 255])
 			yellow_mask = cv2.inRange(hsv_frame, low_yellow, high_yellow)
 
-			ret, contrours, _ = cv2.findContours(yellow_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+			try: # opencv 3.2.0 有三個值
+				ret, contrours, _ = cv2.findContours(yellow_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+			except ValueError: # opencv 4.5.0 有二個值
+				contrours, _ = cv2.findContours(yellow_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 			contrours = sorted(contrours, key=lambda x: cv2.contourArea(x), reverse=True)
 
 			for cnt in contrours:
@@ -85,7 +89,12 @@ class MyCamera():
 		rows, cols, _ = frame.shape
 		x_medium = int(cols / 2)
 		center = int(cols / 2)
-		faceCascade = cv2.CascadeClassifier(url + "/" + "haarcascade_frontalface_default.xml")
+
+		if platform.architecture()[1][0:3] == 'Win':
+			print('OOK')
+			faceCascade = cv2.CascadeClassifier(r"haarcascade_frontalface_default.xml")
+		else:
+			faceCascade = cv2.CascadeClassifier(url + "/" + "haarcascade_frontalface_default.xml")
 
 		while True:
 			frame = self.cap_read_status()[1]
