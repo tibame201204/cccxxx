@@ -4,4 +4,4 @@ from servo_files.servo_class import MyServo
 # MyCamera().basic_test()
 # MyCamera().color_test()
 # MyCamera().face_test()
-MyServo().run()
+MyServo().motion()
